@@ -39,7 +39,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${bricolage.variable} ${geist.variable}`}>
-      <body>
+      {/* Extensões de navegador (ex.: ColorZilla) injetam atributos no body antes da hidratação. */}
+      <body suppressHydrationWarning>
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>

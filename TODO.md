@@ -85,6 +85,8 @@ A-01, A-02, A-03, A-04, A-05, A-09, A-10, A-11, AC-1 (deadlock), PEND-08 (export
 
 ## Feito
 
+- 2026-11-04 `app/layout.tsx`: `suppressHydrationWarning` no `<body>` (aviso de hidratação causado pela extensão ColorZilla, `cz-shortcut-listen`; só dev). Não verificado no navegador.
+
 - 2026-11-04 Remoção do backend (dev-react, spec 0.3 T3/T4/T6): removidos MySQL, `mysql2`, `nodemailer`, `tsx`, migrations, docker-compose, Server Action, rate limit, IP, envio no servidor, `leads:export`, testes de integração e variáveis DB_*/SMTP_*/RATE_LIMIT_SALT/CLIENT_IP_HEADER/LEAD_NOTIFY_TO. Site estático (`output: 'export'`); sitemap, robots, OG, ícone, JSON-LD e metadados confirmados no `out/`. Cabeçalhos em `public/_headers`. Cliente do formulário (`lib/leads/client.ts`) com todos os estados, `submissionId` reaproveitado, honeypot `site_url_2`, `<noscript>` (PEND-16 A, default), `NEXT_PUBLIC_LEADS_ENDPOINT` validado no build, mock `scripts/mock-leads-endpoint.mjs`, testes Vitest do cliente, política atualizada (Google operador, IP não coletado, versão 0.2). Verificado em Chrome headless contra o mock: feliz, campo, busy, servidor, rede, timeout 15 s, duplo clique, honeypot, sem JS, CLS 0 em 360/768/1280. **Não verificado: leitura real da resposta do Apps Script (T1)**
 
 - 2026-11-04 PEND-10 decidida pelo dono: Empresa opcional só para Gestor comercial; aviso "Opcional para gestor comercial." no campo
