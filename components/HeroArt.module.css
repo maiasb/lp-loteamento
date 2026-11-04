@@ -1,0 +1,18 @@
+.art {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  aspect-ratio: 6 / 5;
+  margin-inline: auto;
+}
+
+.lot {
+  animation: appear 240ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i) * 30ms);
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,19 @@
+# Cabeçalhos de segurança (CA-41, RNF-11). Formato Cloudflare Pages / Netlify.
+# A hospedagem estática PRECISA aplicá-los (PEND-06). Se não permitir, vale RA-03 (README).
+# connect-src: o fetch ao Apps Script segue o redirecionamento para script.googleusercontent.com
+# (confirmar na T1 e reduzir a lista se der).
+# script-src 'unsafe-inline': o Next injeta scripts inline de hidratação e o site estático não tem nonce (A-06).
+# HSTS: começar curto e sem includeSubDomains (spec RNF-11); subir depois de conferir os subdomínios.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Strict-Transport-Security: max-age=300
+
+# Imagens geradas pelo Next ficam sem extensão no export: forçar o tipo para os crawlers de redes sociais.
+/opengraph-image
+  Content-Type: image/png
+/twitter-image
+  Content-Type: image/png

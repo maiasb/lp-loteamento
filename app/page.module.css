@@ -1,0 +1,408 @@
+.section {
+  padding: 64px 0;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 96px 0;
+  }
+}
+
+.white {
+  background: var(--color-white);
+}
+
+.mist {
+  background: var(--color-mist-100);
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--c-muted);
+  max-width: 52ch;
+}
+
+.small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+/* Alinhamento: centralizado no celular, à esquerda no desktop (design 1). */
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.head h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.1;
+  max-width: 24ch;
+}
+
+.head .lead {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 1024px) {
+  .head {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* Hero */
+.hero {
+  min-height: min(100svh, 760px);
+  padding: 40px 0 64px;
+}
+
+.heroInner {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 2px 14px;
+  border: 1px solid var(--color-line-dark);
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted-dark);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+.heroText h1 {
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+}
+
+.heroText .lead {
+  color: var(--color-text-muted-dark);
+  max-width: 34ch;
+}
+
+.heroActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.heroActions .btn {
+  width: 100%;
+}
+
+.heroActions .small {
+  margin-bottom: 8px;
+  max-width: 34ch;
+}
+
+@media (min-width: 1024px) {
+  .heroInner {
+    grid-template-columns: 7fr 5fr;
+  }
+  .heroText {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .heroText h1 {
+    max-width: 16ch;
+  }
+  .heroText .lead {
+    max-width: 52ch;
+  }
+  .heroActions {
+    align-items: flex-start;
+    max-width: 420px;
+  }
+}
+
+/* Demonstração */
+.steps {
+  display: grid;
+  gap: 4px;
+  max-width: 52ch;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: s;
+  color: var(--color-ink-900);
+  font-size: 0.9375rem;
+}
+
+.steps li {
+  counter-increment: s;
+}
+
+.steps li::before {
+  content: counter(s) '. ';
+  font-weight: 700;
+}
+
+.demoCta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-line);
+  text-align: center;
+}
+
+.demoCta .btn {
+  width: 100%;
+  max-width: 360px;
+}
+
+.demoCta .small {
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+/* Cartões */
+.cards3,
+.cards2 {
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .cards2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cards3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .card {
+    align-items: flex-start;
+    padding: 24px;
+    text-align: left;
+  }
+}
+
+.iconBox {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--color-mist-100);
+  color: var(--color-blue-800);
+}
+
+.mist .iconBox {
+  background: var(--color-mist-100);
+}
+
+.checks {
+  display: grid;
+  gap: 10px;
+  text-align: inherit;
+}
+
+.checks li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.checks svg {
+  flex: none;
+  margin-top: 4px;
+  color: var(--color-success-800);
+}
+
+@media (max-width: 767px) {
+  .checks li {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .checks svg {
+    margin-top: 0;
+  }
+}
+
+.from {
+  margin-top: auto;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.sectionCta {
+  margin-top: 32px;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .sectionCta {
+    text-align: left;
+  }
+}
+
+/* FAQ */
+.faqGrid {
+  display: grid;
+  gap: 8px;
+}
+
+@media (min-width: 1024px) {
+  .faqGrid {
+    grid-template-columns: 360px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .faqHead {
+    position: sticky;
+    top: 96px;
+  }
+}
+
+/* Contato */
+.contact {
+  padding-bottom: 72px;
+  scroll-margin-top: -24px; /* o scroll-padding global deixaria uma faixa clara sob o cabeçalho */
+}
+
+.contactGrid {
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 1024px) {
+  .contactGrid {
+    grid-template-columns: 5fr 7fr;
+    gap: 64px;
+    align-items: start;
+  }
+}
+
+.contactText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.contactText h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.1;
+  max-width: 20ch;
+}
+
+.steps3 {
+  display: grid;
+  gap: 8px;
+  max-width: 44ch;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: p;
+  font-size: 0.875rem;
+  color: var(--c-muted);
+  text-align: inherit;
+}
+
+.steps3 li {
+  counter-increment: p;
+}
+
+.steps3 li::before {
+  content: counter(p) '. ';
+  color: var(--c-text);
+  font-weight: 700;
+}
+
+.steps3 strong {
+  color: var(--c-text);
+}
+
+.direct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.direct p {
+  color: var(--c-muted);
+  font-size: 0.875rem;
+}
+
+@media (min-width: 1024px) {
+  .contactText {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .direct {
+    align-items: flex-start;
+  }
+}
+
+/* Revelação ao entrar na tela: só opacity/transform, sem JS e sem salto (design 8). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

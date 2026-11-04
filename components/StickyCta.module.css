@@ -1,0 +1,38 @@
+.bar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px calc(10px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--color-line-dark);
+  transition:
+    transform var(--dur-base) var(--ease-in-out),
+    visibility 0s linear 0s;
+}
+
+.bar a {
+  width: 100%;
+  max-width: 520px;
+}
+
+.bar[data-hidden='true'] {
+  transform: translateY(100%);
+  visibility: hidden;
+  transition:
+    transform var(--dur-base) var(--ease-in-out),
+    visibility 0s linear var(--dur-base);
+}
+
+@media (min-width: 768px) {
+  .bar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar[data-hidden='true'] {
+    transform: none;
+    opacity: 0;
+  }
+}

@@ -1,0 +1,138 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--header-h);
+  border-bottom: 1px solid var(--color-line-dark);
+}
+
+.headerInner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .headerInner {
+    justify-content: space-between;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .nav ul {
+    display: none; /* sem espaço entre 768 e 899 px: o CTA e a marca têm prioridade */
+    gap: 8px;
+  }
+  .nav :global(.btn) {
+    white-space: nowrap;
+  }
+  .nav li a:not(:global(.btn)) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 8px;
+    color: var(--color-paper-50);
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+  .nav li a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+.footer {
+  background: var(--color-ink-950);
+  border-top: 1px solid var(--color-line-dark);
+  padding: 64px 0 calc(48px + var(--bar-h) + env(safe-area-inset-bottom));
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding-bottom: 48px;
+    text-align: left;
+  }
+}
+
+.footerInner {
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 768px) {
+  .footerInner {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+}
+
+.footBrand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .footBrand {
+    justify-content: flex-start;
+  }
+}
+
+.muted {
+  color: var(--c-muted);
+  font-size: 0.875rem;
+  max-width: 40ch;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .muted {
+    margin-inline: 0;
+  }
+}
+
+.footTitle {
+  font-family: var(--font-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 8px;
+}
+
+.footLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--c-link);
+  font-size: 0.9375rem;
+}
+
+.legal {
+  display: grid;
+  gap: 4px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-line-dark);
+  color: var(--c-muted);
+  font-size: 0.875rem;
+}
+
+@media (min-width: 900px) {
+  .nav ul {
+    display: flex;
+  }
+}

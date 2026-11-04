@@ -1,0 +1,25 @@
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--color-paper-50);
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Marca desenhada uma vez, depois do primeiro paint; sem JS ou com redução de movimento já completa. */
+.quad {
+  animation: draw 200ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+@keyframes draw {
+  from {
+    opacity: 0;
+  }
+}

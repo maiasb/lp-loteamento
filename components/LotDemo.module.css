@@ -1,0 +1,354 @@
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+  color: var(--color-ink-900);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 24px;
+  }
+}
+
+.defs {
+  position: absolute;
+  pointer-events: none;
+}
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  min-height: 44px;
+}
+
+@media (min-width: 768px) {
+  .bar {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-mist-100);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 20px;
+  margin-block: 8px;
+}
+
+@media (min-width: 768px) {
+  .legend {
+    justify-content: flex-start;
+  }
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 0.875rem;
+}
+
+.legend strong {
+  min-width: 2ch;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.stage {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .stage {
+    grid-template-columns: 1fr 320px;
+    align-items: start;
+  }
+}
+
+/* Duas variantes do mapa: o CSS escolhe, sem medir largura em JS (sem salto de layout). */
+.mapBox {
+  display: block;
+}
+
+.mapBoxWide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mapBox {
+    display: none;
+  }
+  .mapBoxWide {
+    display: block;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 768px) {
+  .tabs {
+    display: none;
+  }
+}
+
+.tab {
+  flex: 1;
+  min-height: 48px;
+  border: 1.5px solid var(--color-ink-900);
+  border-radius: var(--radius-md);
+  background: transparent;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: opacity var(--dur-fast);
+}
+
+.tab[aria-selected='true'] {
+  background: var(--color-ink-900);
+  color: var(--color-paper-50);
+}
+
+.wide,
+.narrow {
+  background: var(--color-mist-100);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.wide {
+  aspect-ratio: 820 / 488;
+}
+
+.narrow {
+  aspect-ratio: 336 / 232;
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+}
+
+.street,
+.area {
+  font-size: 13px;
+  font-weight: 600;
+  fill: #4a5b6c;
+}
+
+.lot {
+  cursor: pointer;
+  outline: none;
+}
+
+.layer {
+  opacity: 0;
+  transition: opacity 240ms var(--ease-in-out);
+}
+
+.lot[data-status='disponivel'] .disponivel,
+.lot[data-status='reservado'] .reservado,
+.lot[data-status='vendido'] .vendido {
+  opacity: 1;
+}
+
+.num {
+  font-family: var(--font-text);
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--color-ink-900);
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.lot[data-status='vendido'] .num {
+  fill: #fff;
+}
+
+.hover {
+  fill: #000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .lot:hover .hover {
+    opacity: 0.06;
+  }
+}
+
+.fadeIn,
+.focusRing {
+  animation: fade var(--dur-fast) ease-out backwards;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .layer rect {
+    stroke: CanvasText;
+  }
+  .lot[data-status='vendido'] .num {
+    fill: CanvasText;
+  }
+}
+
+/* Painel de detalhe: altura reservada para o pior caso (nunca cresce ao selecionar). */
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 540px;
+  padding: 20px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+}
+
+@media (min-width: 480px) {
+  .panel {
+    min-height: 490px;
+  }
+}
+
+.panelBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fade var(--dur-fast) ease-out backwards;
+}
+
+.panelTitle {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.chip {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border: 1.5px solid;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.chip.disponivel {
+  border-color: #2e7d32;
+  background: #e4f3e6;
+}
+.chip.reservado {
+  border-color: #b26a00;
+  background: #ffe7b8;
+}
+.chip.vendido {
+  border-color: #8e1b1b;
+  background: #c62828;
+  color: #fff;
+}
+
+.data {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 0.875rem;
+}
+
+.data dt {
+  color: var(--color-text-muted);
+}
+
+.data dd {
+  font-weight: 600;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 200px;
+  text-align: left;
+}
+
+@media (min-width: 480px) {
+  .action {
+    min-height: 150px;
+  }
+}
+
+.action :global(.btn) {
+  width: 100%;
+}
+
+.reason,
+.success {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.success {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-success-50);
+  color: var(--color-success-800);
+  font-weight: 500;
+}
+
+.close {
+  align-self: flex-start;
+  font-size: 0.875rem;
+}
+
+.empty {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.fictional {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.restart {
+  justify-content: center;
+}

@@ -1,0 +1,366 @@
+/* Form e sucesso ocupam a mesma célula da grade: o card nunca muda de altura (CA-17). */
+.card {
+  display: grid;
+  background: var(--color-white);
+  color: var(--color-ink-900);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 20px;
+  max-width: 560px;
+  width: 100%;
+  margin-inline: auto;
+  /* O card é branco dentro de seção escura: links, botão de contorno e foco usam as cores do tema claro. */
+  --c-text: var(--color-ink-900);
+  --c-muted: var(--color-text-muted);
+  --c-link: var(--color-blue-800);
+  --c-focus: var(--color-ink-900);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 32px;
+  }
+}
+
+.form,
+.success {
+  grid-area: 1 / 1;
+  text-align: left;
+}
+
+/* Sem JavaScript (CA-24): o <noscript> ocupa a célula do formulário, que fica escondido. */
+.card > noscript {
+  grid-area: 1 / 1;
+  z-index: 1;
+}
+
+.nojs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 24px;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  gap: 4px;
+}
+
+.card[data-state='success'] .form {
+  visibility: hidden;
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding-top: 24px;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.card[data-state='success'] .success {
+  visibility: visible;
+  opacity: 1;
+}
+
+.success h3 {
+  font-size: 1.5rem;
+  outline-offset: 6px;
+}
+
+.check {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--color-success-50);
+  color: var(--color-success-800);
+}
+
+.successActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.pair {
+  display: grid;
+  gap: 4px 16px;
+}
+
+@media (min-width: 1024px) {
+  .pair {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field,
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.label {
+  min-height: 20px;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1.5px solid var(--color-field-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  font-size: 1rem;
+}
+
+.input::placeholder {
+  color: var(--color-disabled-text);
+}
+
+.input:hover {
+  border-color: var(--color-ink-700);
+}
+
+.input:focus-visible {
+  border-color: var(--color-blue-800);
+  border-width: 2px;
+  padding: 0 13.5px;
+}
+
+.input[data-invalid='true'] {
+  border-color: var(--color-error-600);
+  border-width: 2px;
+  padding: 0 13.5px;
+}
+
+/* Linha de ajuda/erro com altura reservada: o erro entra só com opacity. */
+.msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-height: 24px;
+  margin-bottom: 4px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.msg[data-tall='true'] {
+  min-height: 46px;
+}
+
+.msg[data-error='true'] {
+  color: var(--color-error-600);
+  animation: fade var(--dur-fast) ease-out;
+}
+
+.msg svg {
+  flex: none;
+  margin-top: 3px;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.radios {
+  display: grid;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .radios {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.radio {
+  position: relative;
+  display: block;
+}
+
+.radio input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.radio span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 0 10px;
+  border: 1.5px solid var(--color-field-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.radio span svg {
+  display: none;
+}
+
+.radio input:checked + span {
+  border: 2px solid var(--color-blue-800);
+  background: #e8f0fb;
+}
+
+.radio input:checked + span svg {
+  display: block;
+}
+
+.radio input:focus-visible + span {
+  outline: 3px solid var(--color-ink-900);
+  outline-offset: 2px;
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.consent input {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--color-blue-800);
+}
+
+.consent a {
+  color: var(--color-blue-800);
+}
+
+/* Honeypot: fora da tela, sem afetar o layout. */
+.extra {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.submit {
+  margin-top: 8px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .submit {
+    width: auto;
+    min-width: 220px;
+    justify-self: start;
+  }
+}
+
+.submit[aria-disabled='true'] {
+  cursor: progress;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
+
+.note {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.note a {
+  color: var(--color-blue-800);
+}
+
+/* Slot reservado para erro geral / limite / falha (design 6, D-4). */
+.alertSlot {
+  min-height: 96px;
+  margin-top: 12px;
+}
+
+@media (min-width: 768px) {
+  .alertSlot {
+    min-height: 72px;
+  }
+}
+
+.alertSlot:not([data-visible='true']) {
+  visibility: hidden;
+}
+
+.alertSlot[data-visible='true'] {
+  animation: fade var(--dur-fast) ease-out;
+}
+
+.alertBox {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-error-600);
+  border-radius: var(--radius-md);
+  background: var(--color-error-50);
+  color: var(--color-ink-900);
+  font-size: 0.875rem;
+}
+
+p.alertBox {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.alertActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
