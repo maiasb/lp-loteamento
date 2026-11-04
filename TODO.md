@@ -6,7 +6,13 @@
 
 ## Bloqueios de publicação
 
-- [ ] **Publicação no GitHub Pages preparada em 2026-11-04** (repo público `maiasb/lp-loteamento`, domínio `loteamento.odevmaia.com.br`, CNAME no Cloudflare sem proxy, workflow `.github/workflows/pages.yml`). O deploy só roda quando existir a variável de repositório `NEXT_PUBLIC_LEADS_ENDPOINT`; cadastrar também `NEXT_PUBLIC_WHATSAPP` e `NEXT_PUBLIC_CONTACT_EMAIL` (Settings > Secrets and variables > Actions > Variables). Depois: marcar "Enforce HTTPS" no Pages quando o certificado sair e dar push do card no portfólio (`maiasb.github.io`, `projetos/index.html`, já editado e sem commit). Riscos aceitos pelo dono: política provisória (BUG-07) e sem `_headers` no GitHub Pages (RA-03; CSP/HSTS só com proxy do Cloudflare)
+- [ ] **Publicado em 2026-11-04** em https://loteamento.odevmaia.com.br/ (repo público `maiasb/lp-loteamento`, GitHub Pages por Actions, CNAME no Cloudflare sem proxy, HTTPS ativo, variáveis `NEXT_PUBLIC_*` no repo, card no portfólio em `maiasb.github.io`). Pendente depois do deploy:
+  - [ ] **T1 (fechar)**: enviar o formulário uma vez pelo site real e conferir a linha na planilha e a mensagem de sucesso (o `curl` só provou o script e o `access-control-allow-origin: *`; leitura da resposta no navegador, tempo frio/quente, 10 envios simultâneos e Safari/iOS seguem sem teste)
+  - [ ] Apagar da planilha as linhas de teste (ex.: "Teste Claude", `teste-claude@exemplo.test`)
+  - [ ] Rodar `testarFormula` no editor do Apps Script se ainda não rodou (RN-14) e conferir `-> OK`
+  - [ ] Riscos aceitos pelo dono: política provisória (BUG-07) e sem `_headers` no GitHub Pages (RA-03: sem CSP/HSTS; só com proxy do Cloudflare ou outra hospedagem); `POLICY_VERSIONS` do script precisa conter a versão do site (hoje `0.2`)
+  - [ ] Atualizar o README com a hospedagem (GitHub Pages, workflow, variáveis do repo, domínio) e o item PEND-06 (hospedagem e domínio definidos; cabeçalhos e pipeline parcialmente atendidos)
+  - [ ] Workflow usa actions em Node 20 (aviso de descontinuação): subir `checkout`, `setup-node`, `configure-pages`, `upload-pages-artifact`, `deploy-pages` para versões em Node 24 quando houver
 
 - [ ] **T1 (BLOQUEIA PUBLICAÇÃO)**: o dono publica o script (`apps-script/`, ver `docs/integracoes/leads-apps-script.md`) e prova que o navegador **lê** a resposta (`{ok:true}` etc.) a partir de uma página estática; medir tempo frio/quente, 10 envios simultâneos, `=` no início, e confirmar os domínios da CSP. Até lá o cliente (`lib/leads/client.ts`) só foi provado contra o mock (`yarn leads:mock`). Se a resposta não for legível, a decisão volta ao dono (ADR-0001, opções B/C)
 - [ ] BUG-07 (BLOQUEIA PUBLICAÇÃO): política com texto provisório ("nome ou razão social e CNPJ a serem informados", "O prazo definitivo será informado aqui"). Depende de PEND-09/PEND-11 (dados do dono) e da revisão do lgpd-specialist
