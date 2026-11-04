@@ -1,0 +1,48 @@
+name: Publicar no GitHub Pages
+
+# Só publica quando as variáveis do repositório (Settings > Secrets and variables > Actions > Variables)
+# existirem: sem elas o job é pulado em vez de falhar. O build de produção exige valores reais (CA-33).
+# Variáveis: NEXT_PUBLIC_WHATSAPP, NEXT_PUBLIC_CONTACT_EMAIL, NEXT_PUBLIC_LEADS_ENDPOINT.
+# Todas são públicas (vão para o navegador); por isso são variáveis, não secrets.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ vars.NEXT_PUBLIC_LEADS_ENDPOINT != '' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      NEXT_PUBLIC_WHATSAPP: ${{ vars.NEXT_PUBLIC_WHATSAPP }}
+      NEXT_PUBLIC_CONTACT_EMAIL: ${{ vars.NEXT_PUBLIC_CONTACT_EMAIL }}
+      NEXT_PUBLIC_LEADS_ENDPOINT: ${{ vars.NEXT_PUBLIC_LEADS_ENDPOINT }}
+      NEXT_PUBLIC_SITE_URL: https://loteamento.odevmaia.com.br
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn typecheck && yarn lint && yarn test
+      - run: yarn build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+      - id: deployment
+        uses: actions/deploy-pages@v4
