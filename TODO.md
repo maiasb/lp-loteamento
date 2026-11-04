@@ -6,6 +6,8 @@
 
 ## Bloqueios de publicação
 
+- [ ] **Publicação no GitHub Pages preparada em 2026-11-04** (repo público `maiasb/lp-loteamento`, domínio `loteamento.odevmaia.com.br`, CNAME no Cloudflare sem proxy, workflow `.github/workflows/pages.yml`). O deploy só roda quando existir a variável de repositório `NEXT_PUBLIC_LEADS_ENDPOINT`; cadastrar também `NEXT_PUBLIC_WHATSAPP` e `NEXT_PUBLIC_CONTACT_EMAIL` (Settings > Secrets and variables > Actions > Variables). Depois: marcar "Enforce HTTPS" no Pages quando o certificado sair e dar push do card no portfólio (`maiasb.github.io`, `projetos/index.html`, já editado e sem commit). Riscos aceitos pelo dono: política provisória (BUG-07) e sem `_headers` no GitHub Pages (RA-03; CSP/HSTS só com proxy do Cloudflare)
+
 - [ ] **T1 (BLOQUEIA PUBLICAÇÃO)**: o dono publica o script (`apps-script/`, ver `docs/integracoes/leads-apps-script.md`) e prova que o navegador **lê** a resposta (`{ok:true}` etc.) a partir de uma página estática; medir tempo frio/quente, 10 envios simultâneos, `=` no início, e confirmar os domínios da CSP. Até lá o cliente (`lib/leads/client.ts`) só foi provado contra o mock (`yarn leads:mock`). Se a resposta não for legível, a decisão volta ao dono (ADR-0001, opções B/C)
 - [ ] BUG-07 (BLOQUEIA PUBLICAÇÃO): política com texto provisório ("nome ou razão social e CNPJ a serem informados", "O prazo definitivo será informado aqui"). Depende de PEND-09/PEND-11 (dados do dono) e da revisão do lgpd-specialist
 - [ ] PEND-18: aceite por escrito do dono dos riscos RA-01, RA-02, RA-04 (e RA-03 se a hospedagem não permitir cabeçalhos)
