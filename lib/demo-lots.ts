@@ -1,8 +1,7 @@
-// Dados e geometria FICTÍCIOS da demonstração (RN-05). Estado vive só no cliente (CA-09).
+// Dados FICTÍCIOS da demonstração (RN-05). Estado vive só no cliente (CA-09).
 
-export type LotStatus = 'disponivel' | 'reservado' | 'vendido';
+export type LotStatus = 'disponivel' | 'reservado' | 'vendido' | 'bloqueado';
 export type Block = 'A' | 'B';
-export type Variant = 'wide' | 'narrow';
 
 export type Lot = {
   id: string; // "A-05"
@@ -14,15 +13,27 @@ export type Lot = {
 };
 
 export const BLOCKS: Block[] = ['A', 'B'];
+export const STATUSES: LotStatus[] = ['disponivel', 'reservado', 'vendido', 'bloqueado'];
 export const STATUS_LABEL: Record<LotStatus, string> = {
   disponivel: 'Disponível',
   reservado: 'Reservado',
   vendido: 'Vendido',
+  bloqueado: 'Bloqueado',
 };
 
 const SOLD = new Set(['A-03', 'A-04', 'A-09', 'B-06']);
 const RESERVED = new Set(['A-07', 'A-12', 'B-02', 'B-08', 'B-09', 'B-11']);
+const BLOCKED = new Set(['A-06', 'B-05']);
 const PRICE_PER_M2: Record<Block, number> = { A: 420, B: 450 };
+
+const initialOf = (id: string): LotStatus =>
+  SOLD.has(id)
+    ? 'vendido'
+    : RESERVED.has(id)
+      ? 'reservado'
+      : BLOCKED.has(id)
+        ? 'bloqueado'
+        : 'disponivel';
 
 export const LOTS: Lot[] = BLOCKS.flatMap((block) =>
   Array.from({ length: 12 }, (_, i) => {
@@ -36,7 +47,7 @@ export const LOTS: Lot[] = BLOCKS.flatMap((block) =>
       number,
       area,
       price: area * PRICE_PER_M2[block],
-      initialStatus: SOLD.has(id) ? 'vendido' : RESERVED.has(id) ? 'reservado' : 'disponivel',
+      initialStatus: initialOf(id),
     } satisfies Lot;
   })
 );
@@ -46,65 +57,62 @@ export type StatusMap = Record<string, LotStatus>;
 export const initialStatuses = (): StatusMap =>
   Object.fromEntries(LOTS.map((l) => [l.id, l.initialStatus]));
 
-export function countByStatus(statuses: StatusMap, lots: Lot[] = LOTS) {
-  const counts: Record<LotStatus, number> = { disponivel: 0, reservado: 0, vendido: 0 };
-  for (const lot of lots) counts[statuses[lot.id] ?? lot.initialStatus]++;
+export function countByStatus(statuses: StatusMap) {
+  const counts: Record<LotStatus, number> = {
+    disponivel: 0,
+    reservado: 0,
+    vendido: 0,
+    bloqueado: 0,
+  };
+  for (const lot of LOTS) counts[statuses[lot.id] ?? lot.initialStatus]++;
   return counts;
 }
 
-/** Posição na grade: larga = grade contínua 6×4 (A em 0-1, B em 2-3); estreita = 4×3 da quadra. */
-export function gridPos(lot: Lot, variant: Variant): { row: number; col: number } {
+/** Planta fictícia: 800 x 500. Cada quadra é uma grade de 6 colunas x 2 linhas de lotes. */
+export const PLAN = { w: 800, h: 500 };
+const GRID = { x0: 40, cw: 120, ch: 90, A: 30, B: 290 };
+
+/** Vértice da grade regular: os lotes são retângulos alinhados. */
+function vertex(block: Block, gx: number, gy: number): [number, number] {
+  const y0 = block === 'A' ? GRID.A : GRID.B;
+  return [GRID.x0 + gx * GRID.cw, y0 + gy * GRID.ch];
+}
+
+/** Contorno do lote (como uma forma ligada da planta do sistema) e a caixa que o envolve. */
+export function lotShape(lot: Lot): {
+  points: string;
+  box: { x: number; y: number; w: number; h: number };
+} {
   const i = lot.number - 1;
-  if (variant === 'wide') {
-    return { row: Math.floor(i / 6) + (lot.block === 'B' ? 2 : 0), col: i % 6 };
-  }
-  return { row: Math.floor(i / 4), col: i % 4 };
+  const col = i % 6;
+  const row = Math.floor(i / 6);
+  const v = [
+    vertex(lot.block, col, row),
+    vertex(lot.block, col + 1, row),
+    vertex(lot.block, col + 1, row + 1),
+    vertex(lot.block, col, row + 1),
+  ];
+  const xs = v.map((p) => p[0]);
+  const ys = v.map((p) => p[1]);
+  const x = Math.min(...xs);
+  const y = Math.min(...ys);
+  return {
+    points: v.map((p) => p.join(',')).join(' '),
+    box: { x, y, w: Math.max(...xs) - x, h: Math.max(...ys) - y },
+  };
 }
 
-export const GRID = { wide: { rows: 4, cols: 6 }, narrow: { rows: 3, cols: 4 } } as const;
-export const CELL = { w: 80, h: 72 };
-const ORIGIN = { wide: { x: 60, y: 60, blockGap: 80 }, narrow: { x: 8, y: 8, blockGap: 0 } };
+/** Ordem de leitura de cada lote na planta: quadra A, depois B, linha a linha. */
+export const centerOf = (lot: Lot) => {
+  const { box } = lotShape(lot);
+  return { x: box.x + box.w / 2, y: box.y + box.h / 2 };
+};
 
-/** Canto superior esquerdo do lote no viewBox da variante. */
-export function lotXY(lot: Lot, variant: Variant): { x: number; y: number } {
-  const { row, col } = gridPos(lot, variant);
-  const o = ORIGIN[variant];
-  // Na larga, a rua (80 px) separa as quadras A (linhas 0-1) e B (linhas 2-3).
-  const street = variant === 'wide' && row >= 2 ? o.blockGap : 0;
-  return { x: o.x + col * CELL.w, y: o.y + row * CELL.h + street };
-}
-
-export type MoveKey =
-  'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Home' | 'End' | 'CtrlHome' | 'CtrlEnd';
-
-/** Próximo lote no teclado (roving tabindex); `null` se a seta cair fora da grade. */
-export function moveFocus(from: Lot, key: MoveKey, variant: Variant, visible: Lot[]): Lot | null {
-  const { row, col } = gridPos(from, variant);
-  const { rows, cols } = GRID[variant];
-  const at = (r: number, c: number) =>
-    visible.find((l) => {
-      const p = gridPos(l, variant);
-      return p.row === r && p.col === c;
-    }) ?? null;
-  switch (key) {
-    case 'ArrowUp':
-      return at(row - 1, col);
-    case 'ArrowDown':
-      return at(row + 1, col);
-    case 'ArrowLeft':
-      return at(row, col - 1);
-    case 'ArrowRight':
-      return at(row, col + 1);
-    case 'Home':
-      return at(row, 0);
-    case 'End':
-      return at(row, cols - 1);
-    case 'CtrlHome':
-      return visible[0] ?? null;
-    case 'CtrlEnd': {
-      return at(rows - 1, cols - 1);
-    }
-  }
+/** Resumo da seleção, ex.: "3 lotes · 1.050 m² · R$ 450.000,00". */
+export function summary(lots: Lot[]): string {
+  const area = lots.reduce((sum, l) => sum + l.area, 0);
+  const total = lots.reduce((sum, l) => sum + l.price, 0);
+  return `${lots.length} ${lots.length === 1 ? 'lote' : 'lotes'} · ${area.toLocaleString('pt-BR')} m² · ${brl(total)}`;
 }
 
 export const brl = (n: number) => n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });

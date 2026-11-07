@@ -4,6 +4,8 @@
 
 - Remoção do backend (spec 0.3, T3/T4/T6 feitas pelo dev-react em 2026-11-04) e script do Google entregue (`apps-script/`, não publicado). Falta: T1 (spike real do Apps Script, dev-integrations + dono), T7 (copywriter), T8 (lgpd-specialist), T9..T16.
 
+- 2026-11-07 Demo de lotes atualizada para espelhar `/maps` do loteamento (seleção pelas formas SVG da planta, com textura, ícone, dica, selo de ordem e zoom/arraste; legenda de 4 status incl. Bloqueado, painel com preço/m², seleção múltipla e barra de seleção). Falta: conferir no navegador real (clique, seleção, Esc, leitor de tela) e CLS 0 em 360/768/1280 (dev-qa); RN-04/CA-05/CA-07 e copy.md/design.md já ajustados; publicar (`git push`) quando o dono quiser.
+
 ## Bloqueios de publicação
 
 - [ ] **Publicado em 2026-11-04** em https://loteamento.odevmaia.com.br/ (repo público `maiasb/lp-loteamento`, GitHub Pages por Actions, CNAME no Cloudflare sem proxy, HTTPS ativo, variáveis `NEXT_PUBLIC_*` no repo, card no portfólio em `maiasb.github.io`). Pendente depois do deploy:

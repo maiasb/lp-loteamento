@@ -1,8 +1,8 @@
 .art {
   width: 100%;
-  max-width: 560px;
+  max-width: 640px;
   height: auto;
-  aspect-ratio: 6 / 5;
+  aspect-ratio: 800 / 500;
   margin-inline: auto;
 }
 

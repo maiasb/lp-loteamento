@@ -97,7 +97,7 @@ Twitter, ícone, JSON-LD e metadados. Rotas de metadados têm `export const dyna
 
 ```
 app/                 páginas (/, /politica-de-privacidade, 404), sitemap, robots, OG, ícone
-components/          LotDemo (mapa interativo), LeadForm, StickyCta (únicos client components) + seções
+components/          LotDemo (planta interativa, painel e seleção múltipla); HeroArt reutiliza a planta (`lib/plan-style.ts`), LeadForm, StickyCta (únicos client components) + seções
 lib/                 contact, content (textos do copy.md), demo-lots (dados do mapa), policy, leads/validate, leads/client
 public/_headers      cabeçalhos de segurança para a hospedagem estática
 scripts/             mock-leads-endpoint.mjs

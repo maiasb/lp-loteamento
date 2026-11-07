@@ -234,63 +234,33 @@ Mesmo cabeçalho (sem barra inferior de CTA; o botão do cabeçalho vira link "V
 
 ## 4. Mapa de lotes interativo (demonstração)
 
-### 4.1 Dados e geometria (fictícios; RN-05)
+> Revisado em 2026-11-07 para espelhar `/maps` do sistema (planta com lotes numerados, painel do lote, seleção múltipla). Substitui a grade de retângulos com abas por quadra, as duas variantes de SVG e o roving tabindex.
 
-- 24 lotes: **Quadra A** A-01..A-12 e **Quadra B** B-01..B-12. Numeração por linha, da esquerda para a direita.
-- Distribuição inicial: **Vendido (4):** A-03, A-04, A-09, B-06. **Reservado (6):** A-07, A-12, B-02, B-08, B-09, B-11. **Disponível (14):** os demais. Nenhum "bloqueado" (RN-04).
-- Área e preço fictícios, calculados: lotes de canto (colunas 1 e 6 de cada linha) 360 m², demais 300 m²; preço = área × R$ 420,00/m² (Quadra A) ou × R$ 450,00/m² (Quadra B). Formatar em pt-BR ("300 m²", "R$ 126.000,00"). Sempre acompanhados do aviso "valores fictícios" no painel.
-- Estado vive no cliente (CA-09): recarregar ou "Recomeçar" volta ao inicial; nada vai ao servidor.
+### 4.1 Dados e planta (fictícios; RN-05)
 
-**Dois SVGs com os mesmos dados (um por faixa de largura), alternados por CSS (`display:none` no que não se aplica, o que também o remove da árvore de acessibilidade e da ordem de Tab). Isso evita medir largura em JS e elimina salto de layout.** IDs com prefixo distinto.
+- 24 lotes: **Quadra A** A-01..A-12 e **Quadra B** B-01..B-12. **Vendido (4):** A-03, A-04, A-09, B-06. **Reservado (6):** A-07, A-12, B-02, B-08, B-09, B-11. **Bloqueado (2):** A-06, B-05. **Disponível (12):** os demais.
+- Área e preço calculados: lotes de canto (colunas 1 e 6) 360 m², demais 300 m²; R$ 420,00/m² (A) ou R$ 450,00/m² (B). Formato pt-BR; o painel mostra também o preço por m².
+- **Seleção pelas formas do SVG, como `PlantaFormas` do sistema** (`components/LotPlan.tsx`). Desenho de fundo 800 x 500 (`aspect-ratio` fixo, CLS 0) com rua e rótulos de quadra; cada lote é um `<polygon>` retangular alinhado à grade (6 x 2 por quadra) gerado em `lib/demo-lots.ts`. **Sem número escrito no lote**: quem identifica é a dica, o painel e o `aria-label`.
+- Visual por status (mesmos tokens do sistema): disponível verde a 10 %, reservado laranja a 20 % com pontos, vendido vermelho a 32 % com hachura e borda 2 px, bloqueado cinza com hachura cruzada e borda tracejada. Ícone do status no centro da forma, **só se a menor dimensão na tela for >= 24 px**; texturas em px de tela (dividem por `k`); borda `non-scaling-stroke`.
+- Dica ao passar o mouse ou focar por teclado: "Lote 5 · Quadra A · 300 m² · Disponível". Selecionados: contorno `ink-900` com halo branco e **selo com a ordem de adição** (1, 2, 3) no canto da forma; lote aberto: contorno tracejado; foco: anel azul/branco.
+- **Limitações herdadas do sistema:** zoom de 1x a 8x (botões +, − e ajustar) e arraste só com a planta ampliada; sem zoom por roda (não prender a rolagem da página) e, no zoom 1, `touch-action: pan-y` para a página rolar; em tela estreita as formas ficam pequenas e o zoom é o caminho; lote bloqueado é `role="img"`, sem foco nem clique (visão do vendedor).
+- Estado só no cliente (CA-09).
 
-| Variante | Quando | `viewBox` | Layout |
-|---|---|---|---|
-| **Larga** | ≥ 768 px | `0 0 820 488` (razão 820/488) | Quadra A: grade 6 col × 2 linhas, origem (60,60); rua "Rua das Acácias" (faixa de 80 px, y 204–284, tracejado central); Quadra B: origem (60,284); à direita (x 580–760): "Praça" (y 60–204) e "Área de lazer" (y 284–428) como áreas verdes `#DDEBD8` **não interativas**, `aria-hidden` |
-| **Estreita** | < 768 px | `0 0 336 232` (razão 336/232) | **Uma quadra por vez**, grade 4 col × 3 linhas, origem (8,8); seletor de quadra (abas) acima do mapa |
+### 4.2 Teclado e leitor de tela
 
-- Cada lote: retângulo 80×72 (recuo interno de 2 px → 76×68 desenhados), raio 6. Texto do número (ex. "A-05") centralizado, Geist 600, 15 unidades; ícone de status 16 px no canto inferior esquerdo do lote; sem texto de área dentro do lote.
-- Tamanhos de toque resultantes: estreita ≈ 70×63 px em 320 px úteis (>= 44, recomendado); larga ≈ 74×67 px em 760 px de largura. Nenhum lote < 44×44 px entre 320 e 1920 px.
-- Fundo do mapa: `mist-100`, raio 12, ruas em branco, quadras com contorno `line`. Container do mapa com `aspect-ratio` da variante ativa (ver seção 6).
-- Abas de quadra (só estreita): `role="tablist"`, 2 abas 48 px de altura, largura 50 %/50 %, texto "Quadra A · 7 disp." (contagem de disponíveis, tabular); ativa: fundo `ink-900`, texto `paper-50`; inativa: contorno. Setas esquerda/direita trocam de aba (padrão tabs); a troca é por `opacity` 120 ms.
+- Um Tab entra na planta (lote com tabindex 0); **setas** vão ao vizinho mais próximo na direção (entre os que reagem); Enter/Espaço abre o painel; Esc fecha. Sem armadilha de teclado.
+- Toque: um toque abre; abaixo de 1024 px o painel rola até a vista (suave só sem redução de movimento).
+- `role=status` anuncia reservas e o reinício, com as quatro contagens. Botões de zoom: 44 px, fora da planta no celular e sobre ela a partir de 768 px.
 
-### 4.2 Estados visuais de um lote
+### 4.3 Painel do lote e seleção
 
-| Estado | Visual | Regra |
-|---|---|---|
-| Base | conforme tabela de status (seção 2.1) | cor + ícone + padrão/contorno + texto |
-| Hover (ponteiro fino) | contorno +1 px e fundo 6 % mais escuro; cursor pointer | só reforço; nada de informação exclusiva; sem `scale` (como no produto) |
-| Foco por teclado | anel duplo: 3 px `ink-900` por fora + 2 px branco por dentro (contraste vs mapa > 10:1) | sempre visível, sem depender de hover |
-| Selecionado | anel `#1565C0` 4 px + marcador `lime-400` 10×10 no canto + `aria-pressed="true"` | apenas 1 selecionado por vez |
-| Selecionado + foco | soma os dois anéis (foco por fora) | |
-| Reservado agora (após ação) | troca de padrão por cross-fade de 240 ms (camada de reservado entra com `opacity`) | com `prefers-reduced-motion`, troca instantânea |
-| Forced colors (alto contraste do SO) | contornos em `CanvasText`/`Highlight`, hachura mantida por `stroke`, ícone e número intactos | testar; status continua legível por ícone e texto |
+- Painel (altura mínima 480 px, nunca cresce): título "Lote 05", "Quadra A · Residencial Exemplo", botão fechar 44 px, chip de status, `dl` Área / Preço (fictício) / Preço por m², ações e "Valores fictícios.".
+- Ações (como `acoesDoPainel` do sistema): disponível sem seleção: "Reservar este lote" + "Adicionar à seleção"; já na seleção: "Reservar (n)" + "Remover da seleção"; há outros na seleção: "Adicionar à seleção" + "Reservar só este lote". Reservado/vendido/bloqueado: só o motivo em texto. Após reservar, aviso `success-50` (RN-04: nunca gera "vendido").
+- Barra de seleção sempre presente no rodapé do card, com altura fixa (232 px celular, 176 px ≥ 768): vazia mostra a dica; com lotes mostra "n lotes · área · valor", chips removíveis (rolagem horizontal), "Reservar (n)" e "Limpar seleção". O sistema real usa barra fixa na tela; aqui fica no card para não cobrir o CTA fixo da página.
 
-Todos os lotes (incluindo vendido e reservado) são selecionáveis para ver o detalhe (CA-06, CA-08).
+### 4.4 Reiniciar
 
-### 4.3 Semântica e teclado (CA-11)
-
-- Contêiner do mapa: `role="group"` + `aria-label="Mapa do Residencial Vista do Ipê (dados fictícios)"`. Cada lote: `role="button"`, `aria-pressed`, `aria-label` = "Quadra A, lote 05, 300 metros quadrados, Disponível" (status por texto).
-- **Roving tabindex:** um único Tab entra no mapa (no lote selecionado ou, sem seleção, no primeiro lote); o próximo Tab sai do mapa para o painel.
-- **Setas** movem o foco para o lote vizinho na grade (na larga, as 4 linhas A1, A2, B1, B2 formam uma grade contínua 6×4, de modo que ↓ na última linha de A vai à primeira de B); **Home/End** vão ao início/fim da linha; **Ctrl+Home/End** ao primeiro/último lote; as setas **não selecionam** nem alteram o painel. Na estreita, a grade é 4×3 da quadra ativa; seta fora da borda não faz nada.
-- **Enter ou Espaço:** seleciona o lote (CA-06), atualiza o painel; o foco **permanece** no lote. **Esc:** limpa a seleção.
-- Sem armadilha de teclado: nenhuma captura de Tab; toda a ação (selecionar, reservar, recomeçar) alcançável só por teclado.
-- **Toque:** um toque seleciona e mostra o painel (sem hover, sem duplo-toque, sem gesto de arrastar/pinça; `touch-action: manipulation`). Se o painel não couber na tela após a seleção, rolar até ele com `scrollIntoView({block:"nearest"})` (suave só sem redução de movimento), respeitando `scroll-padding-bottom`.
-- Leitor de tela: região `role="status"` (educada) anuncia o resultado das ações: "Lote A-05 reservado na demonstração. Agora: 13 disponíveis, 7 reservados, 4 vendidos." / "Demonstração recomeçada." A legenda não é `aria-live`.
-
-### 4.4 Painel de detalhe (CA-06..08)
-
-Card interno (fundo branco, borda `line`, raio 16, padding 20). Altura reservada: desktop = altura do mapa (≈ 455 px, `align-self: stretch`); celular `min-height: 304 px`. Conteúdo (todo dentro da altura reservada, nunca a aumenta):
-
-- **Vazio** (sem seleção): ícone de ponteiro 32 px + "Toque em um lote do mapa para ver os detalhes" (marcador), centralizado vertical e horizontalmente.
-- **Com lote:** título h3 "Lote A-05" → chip de status (ícone + texto) → lista de dados (`dl`): Quadra, Área, Preço (fictício), Status → ação.
-- **Disponível:** botão primário em claro `md` "Reservar (demonstração)" (largura total). Ao clicar (CA-07): o lote vira reservado, o chip e o título da ação mudam, legenda e contagens atualizam, e no lugar do botão aparece o aviso (ícone check + texto, `success-50`): "Lote reservado na demonstração. No sistema, um admin confirma a venda ou cancela a reserva." O foco vai para o próprio lote (permanece) e o `role=status` anuncia.
-- **Reservado ou Vendido** (CA-08): no lugar do botão, botão `aria-disabled` ("Reservar (demonstração)" em estilo desabilitado) **com o motivo em texto visível** logo abaixo e ligado por `aria-describedby`: "Lote já reservado." / "Lote já vendido." mais a explicação "No sistema, só um lote disponível pode ser reservado."
-- A demonstração **nunca** gera "vendido" por ação do visitante (RN-04).
-- Texto "Valores fictícios" (14 px, `text-muted`) fixo no rodapé do painel.
-
-### 4.5 Reiniciar
-
-Botão de texto "Recomeçar" na barra do card: restaura dados iniciais, limpa seleção, anuncia no `role=status`, mantém o foco no botão.
+Botão de texto "Recomeçar" na barra do card: restaura dados, limpa seleção e painel, anuncia no `role=status`.
 
 ---
 

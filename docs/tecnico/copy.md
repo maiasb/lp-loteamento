@@ -64,7 +64,7 @@ Legenda: `[PEND-xx]` depende de pendência da spec. Tudo entre `{{ }}` é variá
 - E-mail: `{{NEXT_PUBLIC_EMAIL}}`
 - Mensagem inicial do WhatsApp (CA-04): `Olá, quero conhecer o Loteamento Inteligente.`
 
-**Alt da imagem/ilustração do herói:** `Mapa de um loteamento com quadras e lotes coloridos por status: disponível, reservado e vendido.` `[PEND-05: depende de imagem e identidade visual; ajustar o alt ao visual final]`
+**Alt da imagem/ilustração do herói:** `Mapa de um loteamento com quadras e lotes coloridos por status: disponível, reservado, vendido e bloqueado.` `[PEND-05: depende de imagem e identidade visual; ajustar o alt ao visual final]`
 
 > nota: nome, título, subtítulo e CTA principal visíveis na primeira dobra em 360 e 1280 px (CA-01). A imagem do herói deve ser a prévia da demonstração, com dados fictícios (RN-05).
 
@@ -82,25 +82,27 @@ Legenda: `[PEND-xx]` depende de pendência da spec. Tudo entre `{{ }}` é variá
 **Quadras:** `Quadra A`, `Quadra B` (mínimo 2 quadras, 20 lotes)
 
 **Instruções do mapa (acima do mapa):**
-1. `Clique em um lote para ver quadra, número, área, preço e status.`
-2. `Em um lote disponível, use "Reservar (demonstração)".`
+1. `Clique em um lote para ver quadra, área, preço e status.`
+2. `Em um lote disponível, use "Reservar este lote" ou "Adicionar à seleção" para reservar vários de uma vez.`
 3. `Para voltar ao início, use "Recomeçar".`
 
 **Aviso da demonstração (texto visível, abaixo dos passos):** `A demonstração ilustra a lógica de reserva do sistema e não reproduz a tela real.`
 
-**Instrução para teclado e leitor de tela (texto visível ou de apoio):** `Use Tab para percorrer os lotes e Enter ou Espaço para abrir os detalhes.`
+**Instrução para teclado e leitor de tela (texto visível ou de apoio):** `Use Tab para entrar na planta, as setas para percorrer os lotes e Enter ou Espaço para abrir os detalhes. Esc fecha o painel.`
 
 **Legenda de status (com contagem, atualizada a cada ação):**
 - `Disponível: {{n}}`
 - `Reservado: {{n}}`
 - `Vendido: {{n}}`
+- `Bloqueado: {{n}}`
 
-> nota: status sempre por texto além da cor (CA-11, RNF-07). "Bloqueado" não aparece na demo (RN-04).
+> nota: status sempre por texto além da cor (CA-11, RNF-07). Bloqueado não abre: `Lote bloqueado. Só um administrador libera lotes bloqueados.`
 
 **Painel de detalhe do lote:**
-- Rótulos: `Quadra` · `Lote` · `Área` (ex.: `300 m²`) · `Preço (fictício)` · `Status`
-- Botão (lote disponível): `Reservar (demonstração)`
-- Botão fechar: `Fechar detalhes`
+- Título `Lote 05`, subtítulo `Quadra A · Residencial Exemplo`; rótulos `Área` (ex.: `300 m²`) · `Preço (fictício)` · `Preço por m²`; chip de status
+- Botões (lote disponível): `Reservar este lote` / `Adicionar à seleção`; com lote na seleção: `Reservar (n)` / `Remover da seleção`; com outros na seleção: `Adicionar à seleção` / `Reservar só este lote`
+- Vazio: `Clique em um lote da planta para ver os detalhes.` · Botão fechar: `Fechar painel`
+- Barra de seleção: `{{n}} lotes · {{área}} m² · R$ {{total}}`, `Reservar (n)`, `Limpar seleção`; vazia: `Nenhum lote na seleção. Use "Adicionar à seleção" para reservar vários lotes juntos.`
 
 **Mensagem após reservar (CA-07):** `Lote reservado na demonstração. No sistema, a reserva fica aguardando: só um administrador confirma a venda ou cancela a reserva.`
 
@@ -117,8 +119,8 @@ Legenda: `[PEND-xx]` depende de pendência da spec. Tudo entre `{{ }}` é variá
 **Microcopy:** `Fale com a gente por formulário, WhatsApp ou e-mail.`
 
 **Alt / rótulos do mapa:**
-- Região do mapa (aria-label): `Mapa de demonstração do Residencial Exemplo, com lotes por quadra`
-- Cada lote (aria-label): `Quadra {{q}}, lote {{n}}, {{status}}` (ex.: `Quadra A, lote 3, disponível`)
+- Região do mapa (aria-label): `Planta de demonstração do Residencial Exemplo, com lotes por quadra`
+- Cada lote (aria-label): `Lote {{n}}, quadra {{q}}, {{área}} metros quadrados, {{status}}`
 
 ---
 

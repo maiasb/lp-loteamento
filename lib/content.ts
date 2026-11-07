@@ -28,7 +28,7 @@ export const HERO = {
   ctaNote: 'Sem cadastro e sem compromisso. Respondemos por WhatsApp ou e-mail.',
   secondary: 'Testar a demonstração',
   secondaryNote: 'Mapa de exemplo, com dados fictícios.',
-  art: 'Mapa de um loteamento com quadras e lotes coloridos por status: disponível, reservado e vendido.',
+  art: 'Mapa de um loteamento com quadras e lotes coloridos por status: disponível, reservado, vendido e bloqueado.',
 };
 
 export const DEMO = {
@@ -36,19 +36,24 @@ export const DEMO = {
   lead: 'Clique num lote, veja os detalhes e faça uma reserva de teste. É um exemplo com dados fictícios, para você sentir como a sua equipe usaria o sistema.',
   notice: 'Dados fictícios, apenas demonstração.',
   name: 'Residencial Exemplo',
+  mapLabel: 'Planta de demonstração do Residencial Exemplo, com lotes por quadra',
   steps: [
-    'Clique em um lote para ver quadra, número, área, preço e status.',
-    'Em um lote disponível, use "Reservar (demonstração)".',
+    'Clique em um lote para ver quadra, área, preço e status.',
+    'Em um lote disponível, use "Reservar este lote" ou "Adicionar à seleção" para reservar vários de uma vez.',
     'Para voltar ao início, use "Recomeçar".',
   ],
   disclaimer: 'A demonstração ilustra a lógica de reserva do sistema e não reproduz a tela real.',
   keyboard:
-    'Use Tab para entrar no mapa, as setas para percorrer os lotes e Enter ou Espaço para abrir os detalhes.',
+    'Use Tab para entrar na planta, as setas para percorrer os lotes e Enter ou Espaço para abrir os detalhes. Esc fecha o painel.',
+  empty: 'Clique em um lote da planta para ver os detalhes.',
+  selectionEmpty:
+    'Nenhum lote na seleção. Use "Adicionar à seleção" para reservar vários lotes juntos.',
   reserved:
     'Lote reservado na demonstração. No sistema, a reserva fica aguardando: só um administrador confirma a venda ou cancela a reserva.',
   alreadyReserved:
     'Lote já reservado. Só lotes disponíveis podem ser reservados. No sistema, o administrador decide se confirma a venda ou cancela a reserva.',
   alreadySold: 'Lote já vendido. Lotes vendidos não podem ser reservados.',
+  alreadyBlocked: 'Lote bloqueado. Só um administrador libera lotes bloqueados.',
   restarted: 'Demonstração reiniciada. Todos os lotes voltaram ao estado inicial.',
   cta: 'Quero isso no meu loteamento',
   ctaNote: 'Fale com a gente por formulário, WhatsApp ou e-mail.',
